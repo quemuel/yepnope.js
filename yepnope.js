@@ -1,6 +1,6 @@
 /**
  * yepnope.js 0.5.0pre
- * by Alex Sexton - AlexSexton@gmail.com 
+ * by Alex Sexton - AlexSexton@gmail.com
  *
  * Major Contributions by:
  * Ralph Holzmann - @ralphholzmann
@@ -12,7 +12,7 @@
  * | A.getJS v1.0
  * | http://www.artzstudio.com/A.js/getJS/
  * |
- * | Developed by: 
+ * | Developed by:
  * | - Dave Artz http://www.artzstudio.com/
  * |
  * | Copyright (c) 2010
@@ -25,27 +25,27 @@
 
 (function(window, doc, undef) {
   function getObject(elem, url, callback, type) {
-    
-    var	object = doc.createElement(elem),
-	done   = 0;
-	
+
+    var object = doc.createElement(elem),
+        done   = 0;
+
     object.src  = object.data = url;
     object.type = type;
-	
+
     // Attach handlers for all browsers
     object[strOnLoad] = object[strOnReadyStateChange] = function() {
-		
+
       if ( !done && (!object[strReadyState] || object[strReadyState] == "loaded" || object[strReadyState] == "complete") ) {
 
-	// Tell global scripts object this script has loaded.
+        // Tell global scripts object this script has loaded.
         // Set scriptDone to prevent this function from being called twice.
-	done = 1;
-		
-	callback(url);
+        done = 1;
 
-	// Handle memory leak in IE
-	object[strOnLoad] = object[strOnReadyStateChange] = null;
-	docHead.removeChild(object);
+        callback(url);
+
+        // Handle memory leak in IE
+        object[strOnLoad] = object[strOnReadyStateChange] = null;
+        docHead.removeChild(object);
       }
     };
 
@@ -53,47 +53,47 @@
   }
 
   function getJS(urls, urlKeyCallback) {
-    
+
     function executeJS() {
-      
+
       function executeCallback() {
 
-	// If all scripts have been cached in the set, it's time
-	// to execute the urlKey callback after the script loads.
-	if (++cacheCount == thisUrlsCount) {
+        // If all scripts have been cached in the set, it's time
+        // to execute the urlKey callback after the script loads.
+        if (++cacheCount == thisUrlsCount) {
 
-	  // Execute the callback associated with this urlKey
-	  thisUrlKeyCallback && thisUrlKeyCallback();
+          // Execute the callback associated with this urlKey
+          thisUrlKeyCallback && thisUrlKeyCallback();
 
-	  // Kill the first item in the url chain and redo executeJS
-	  urlKeyChain.shift();
-	  executeJS();
-	}
+          // Kill the first item in the url chain and redo executeJS
+          urlKeyChain.shift();
+          executeJS();
+        }
       }
 
       for (var i = 0,
-	       thisUrlKey = urlKeyChain[0] || "",
-	       thisUrls = thisUrlKey.split( urlSplit ),
-	       thisUrl,
-	       thisUrlsCount = thisUrls.length,
-	       thisUrlKeyCallback = urlKeyCallbacks[ thisUrlKey ],
-	       cacheCount = 0; i < thisUrlsCount; i++ ) {
-			
-	thisUrl = thisUrls[i];
-	if (urlCached[thisUrl]) {
+               thisUrlKey = urlKeyChain[0] || "",
+               thisUrls = thisUrlKey.split( urlSplit ),
+               thisUrl,
+               thisUrlsCount = thisUrls.length,
+               thisUrlKeyCallback = urlKeyCallbacks[ thisUrlKey ],
+               cacheCount = 0; i < thisUrlsCount; i++ ) {
 
-	  if (urlExecuted[thisUrl]) {
-	    // If we already executed, just do the callback.
-	    executeCallback();					
-	  }
+        thisUrl = thisUrls[i];
+        if (urlCached[thisUrl]) {
+
+          if (urlExecuted[thisUrl]) {
+            // If we already executed, just do the callback.
+            executeCallback();
+          }
           else {
-	    // Rememeber that this script already executed.
-	    urlExecuted[thisUrl] = 1;
-	    // Clear out the type so we load normally.
-            type = ""; 
-            getObject(strScript, thisUrl, executeCallback, type);	
-	  }
-	}
+            // Rememeber that this script already executed.
+            urlExecuted[thisUrl] = 1;
+            // Clear out the type so we load normally.
+            type = "";
+            getObject(strScript, thisUrl, executeCallback, type);
+          }
+        }
       }
     }
 
@@ -103,34 +103,34 @@
       urlCached[url] = 1;
 
       // If this callback happens to be for the first urlKey
-      // in the chain, we can trigger the execution. 
+      // in the chain, we can trigger the execution.
       urlKey == urlKeyChain[0] && executeJS();
     }
 
     var urlKey        = urls.join(urlSplit),
-	urlCountTotal = urls.length,
-	i             = 0,
-	elem          = strScript,
-    	type,
+        urlCountTotal = urls.length,
+        i             = 0,
+        elem          = strScript,
+            type,
         // Contains an arays of urlKeys of this chain, if available.
-	urlKeyChain = this.c;
-		
+        urlKeyChain = this.c;
+
     // Gecko no longer does what we want out of the box.
     // Use object instead.
     if (isGecko) {
 
       elem = "object";
-	
+
     }
     // Manage callbacks and execution order manually.
     else {
-	
-      // We set this to something bogus so browsers do not 
+
+      // We set this to something bogus so browsers do not
       // execute code on our initial request.
       // http://ejohn.org/blog/javascript-micro-templating/
       type = "c";
     }
-	
+
     // If this is a new chain, start a new array, otherwise push the new guy in.
     // This is used to preserve execution order for non FF browsers.
     if (urlKeyChain) {
@@ -161,7 +161,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
     toString              = {}.toString,
     noop                  = function(){},
     isArray               = Array.isArray || function(obj) {
-      return toString.call(obj) == "[object Array]";  
+      return toString.call(obj) == "[object Array]";
     },
     isObject              = function(obj) {
       // Lame object detection, but don't pass it stupid stuff?
@@ -194,10 +194,10 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
     strOnReadyStateChange = "onreadystatechange",
     strOnLoad             = "onload",
     isGecko               = ("MozAppearance" in docHead.style),
-    
+
     // Yepnope Function
     yepnope               = function(needs, currentchain, stack) {
-    
+
     // Allow the recursive stack
     stack = stack || [];
 
@@ -218,7 +218,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
             res     = {
               url      : origUrl,
               // keep this one static for callback variable consistency
-              origUrl  : origUrl, 
+              origUrl  : origUrl,
               prefixes : (pLen > 1) ? parts.slice(0, pLen-1) : undef
             },
             mFunc,
@@ -233,7 +233,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
             res = mFunc(res);
           }
         }
-      
+
         // Go through our global filters
         for (z = 0; z < gLen; z++) {
           res = globalFilters[z](res);
@@ -244,7 +244,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
       }
       return false;
     }
-  
+
     function loadScriptOrStyle(input, callback, chain, index, testResult) {
       // run through our set of prefixes
       var resource = satisfyPrefixes(input);
@@ -253,7 +253,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
       if (!resource || !resource.url || resource.bypass) {
         return chain;
       }
-    
+
       var inc          = resource.url,
           origInc      = resource.origUrl,
           incLen       = inc.length,
@@ -262,7 +262,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
           forceJS      = resource.forceJS,
           forceCSS     = resource.forceCSS,
           styleElem;
-    
+
       // Determine callback, if any
       if ( callback ) {
         callback = isFunction(callback) ? callback : callback[input] || callback[index] || callback[( input.split('/').pop().split('?')[0])];
@@ -276,16 +276,16 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
       // Also do this if it ends in a .css extension
       else if (incLen > 4 && (forceCSS || (!forceJS && inc.substr(incLen-4) === '.css'))) {
         styleElem      = doc.createElement('link');
-      
+
         // add our src to it
         styleElem.href = inc;
         styleElem.rel  = 'stylesheet';
         styleElem.type = 'text/css';
-      
+
         // inject the file
         docHead.insertBefore(styleElem, docFirst);
-      
-      
+
+
         // call the callback
         callback && callback(origInc, testResult, index)
         autoCallback && autoCallback(origInc, testResult, index);
@@ -306,10 +306,10 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
           stack = [];
         }
       }
-    
+
       return chain;
     }
-  
+
     function loadFromTestObject(testObject, chain) {
         var testResult = !!(testObject.test),
             needGroup  = (testResult) ? testObject.yep : testObject.nope,
@@ -317,7 +317,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
             callback   = testObject.callback || (testObject.wait ? noop : undef),
             k,
             l;
-      
+
         // If it's a string
         if (isString(needGroup)) {
           // Just load the script of style
@@ -331,12 +331,12 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
             chain = loadScriptOrStyle(needGroup[l], callback, chain, l, testResult);
           }
         }
-      
+
         // Alias 'both' as 'load' so it's more semantic sometimes
         if (testObject.both && !testObject.load) {
           testObject.load = testObject.both;
         }
-      
+
         // get anything in the load object as well
         if (isString(testObject.load)) {
           // Just load the script of style
@@ -356,10 +356,10 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
           chain = chain.getJS(stack, testObject.complete);
           stack = [];
         }
-  
+
         return chain;
     }
-  
+
     // Someone just decides to load a single script or css file as a string
     if (isString(needs)) {
       chain = loadScriptOrStyle(needs, false, chain, 0);
@@ -369,7 +369,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
       // go through the list of needs
       for(i=0; i < nlen; i++) {
         need = needs[i];
-      
+
         // if it's a string, just load it
         if (isString(need)) {
           chain = loadScriptOrStyle(need, false, chain, 0);
@@ -395,7 +395,7 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
     if (stack.length) {
       chain = chain.getJS(stack);
     }
-  
+
     // allow more loading on this chain
     return chain;
   };
@@ -403,14 +403,14 @@ var docHead               = doc.getElementsByTagName("head")[0] || doc.documentE
   yepnope.addPrefix = function(prefix, callback) {
     prefixes[prefix] = callback;
   };
-  
+
   yepnope.addFilter = function(filter) {
     globalFilters.push(filter);
   };
-  
+
   yepnope.getJS     = getJS;
 
   // Leak me
   window.yepnope    = yepnope;
-  
+
 })(this, this.document);
